@@ -34,6 +34,13 @@ export default function StarRating({
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [hoverStar, setHoverStar] = useState(0);
+
+  // allows to get access to rating State from other component
+  function handleRate(rating) {
+    setRating(rating);
+    onSetRatingExternal(rating);
+  }
+
   const textStyle = {
     lineHeight: "1",
     margin: "0",
@@ -41,11 +48,6 @@ export default function StarRating({
     fontSize: `${size / 1.5}px`,
   };
 
-  // allows to get access to rating State from other component
-  function handleRate(rating) {
-    setRating(rating);
-    onSetRatingExternal(rating);
-  }
   return (
     <div style={containerStyle} className={className}>
       <div style={starContainerStyle}>
@@ -53,7 +55,7 @@ export default function StarRating({
           // i: 0-4
           <Star
             key={i}
-            onClick={() => handleRate(i + 1)}
+            onRate={() => handleRate(i + 1)}
             full={hoverStar ? hoverStar >= i + 1 : rating >= i + 1}
             onMouseEnter={() => {
               setHoverStar(i + 1);
@@ -75,7 +77,7 @@ export default function StarRating({
   );
 }
 
-function Star({ onClick, full, onMouseEnter, onMouseLeave, color, size }) {
+function Star({ onRate, full, onMouseEnter, onMouseLeave, color, size }) {
   const starStyle = {
     width: `${size}px`,
     height: `${size}px`,
@@ -87,7 +89,7 @@ function Star({ onClick, full, onMouseEnter, onMouseLeave, color, size }) {
     <span
       role="button"
       style={starStyle}
-      onClick={onClick}
+      onClick={onRate}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

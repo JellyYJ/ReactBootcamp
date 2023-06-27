@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-// import "./index.css";
+import "./index.css";
 import App from "./App";
+import AppV1 from "./AppV1";
+
 import StarRating from "./StarRating";
 
 // Allows the consumer  wants to use the rating value elsewhere
@@ -18,18 +20,20 @@ function Test() {
     </div>
   );
 }
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    <StarRating maxRating={5} />
+    <AppV1 />
+
+    {/* <StarRating maxRating={5} />
     <StarRating />
     <StarRating maxRating={10} color="red" size={24} className="test" />
     <StarRating
       maxRating={5}
       messages={["Terrible", "Ok", "Good", "Great", "Amazing"]}
     />
-
-    <Test />
+    {/* <Test /> */}
   </React.StrictMode>
 );
