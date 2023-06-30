@@ -30,7 +30,7 @@ export default function StarRating({
   className = "",
   messages = [], // allows the consumer to set messages instead of numbers for the rating
   defaultRating = 0, // allows the consumer to set a default rating
-  onSetRatingExternal,
+  onSetRating,
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [hoverStar, setHoverStar] = useState(0);
@@ -38,7 +38,7 @@ export default function StarRating({
   // allows to get access to rating State from other component
   function handleRate(rating) {
     setRating(rating);
-    onSetRatingExternal(rating);
+    onSetRating(rating);
   }
 
   const textStyle = {

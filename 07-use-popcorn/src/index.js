@@ -1,31 +1,33 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
-import AppV1 from "./AppV1";
+// import App from "./App";
+// import AppV1 from "./AppV1";
+import AppV2 from "./AppV2";
 
-import StarRating from "./StarRating";
+// import StarRating from "./StarRating";
 
-// Allows the consumer  wants to use the rating value elsewhere
-function Test() {
-  const [rating, setRating] = useState(0);
-  return (
-    <div>
-      <StarRating
-        color="green"
-        maxRating={10}
-        onSetRatingExternal={setRating}
-      ></StarRating>
-      <p>This movie is rated {rating} stars</p>
-    </div>
-  );
-}
+// // Allows the consumer  wants to use the rating value elsewhere
+// function Test() {
+//   const [rating, setRating] = useState(0);
+//   return (
+//     <div>
+//       <StarRating
+//         color="green"
+//         maxRating={10}
+//         onSetRatingExternal={setRating}
+//       ></StarRating>
+//       <p>This movie is rated {rating} stars</p>
+//     </div>
+//   );
+// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    <AppV1 />
+    {/* <AppV1 /> */}
+    <AppV2 />
 
     {/* <StarRating maxRating={5} />
     <StarRating />
