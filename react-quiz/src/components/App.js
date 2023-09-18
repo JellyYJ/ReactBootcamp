@@ -11,6 +11,7 @@ import Progress from "./Progress";
 import Finish from "./Finish";
 import Timer from "./Timer";
 import Footer from "./Footer";
+import PreviousButton from "./PreviousButton";
 
 const TIME_PER_QUESTION = 30;
 
@@ -25,7 +26,8 @@ const initalState = {
   // 'loading', 'error', 'ready', 'active', 'finish'
   status: "loading",
   index: 0,
-  answer: null,
+  // answer: null,
+  answers: [], // added prevQuestion function, so need an array to store user's answers
   points: 0,
   highScore: 0,
   secondRemaining: null,
@@ -38,9 +40,14 @@ const initalState = {
 function reducer(state, action) {
   switch (action.type) {
     case "dataReceived":
+      const initialAnswers = Array.from(
+        { length: state.questions.length },
+        () => null
+      );
       return {
         ...state,
         questions: action.payload,
+        answers: initialAnswers,
         status: "ready",
       };
 
@@ -57,20 +64,29 @@ function reducer(state, action) {
       };
     case "newAnswer":
       const question = state.questions.at(state.index);
+      const newAnswers = [...state.answers];
+      newAnswers[state.index] = action.payload;
 
       return {
         ...state,
-        answer: action.payload,
+        // answer: action.payload,
+        answers: newAnswers,
         points:
           action.payload === question.correctOption
             ? state.points + question.points
             : state.points,
       };
+    case "prevQuestion":
+      return {
+        ...state,
+        index: state.index - 1,
+        // answer: state.answer,
+      };
     case "nextQuestion":
       return {
         ...state,
         index: state.index + 1,
-        answer: null,
+        // answer: null,
       };
     case "finish":
       return {
@@ -107,7 +123,7 @@ function reducer(state, action) {
 export default function App() {
   // Uncontruct the states
   const [
-    { questions, status, index, answer, points, highScore, secondRemaining },
+    { questions, status, index, answers, points, highScore, secondRemaining },
     dispatch,
   ] = useReducer(reducer, initalState);
 
@@ -139,22 +155,31 @@ export default function App() {
               numQuestions={numQuestions}
               points={points}
               maxPoints={maxPoints}
-              answer={answer}
+              // answer={answer}
+              answer={answers[index]}
             />
 
             <Question
               question={questions[index]}
               dispatch={dispatch}
-              answer={answer}
+              // answer={answer}
+              answer={answers[index]}
             />
 
             <Footer>
               <Timer dispatch={dispatch} secondRemaining={secondRemaining} />
               <NextButton
                 dispatch={dispatch}
-                answer={answer}
+                // answer={answer}
+                answer={answers[index]}
                 index={index}
                 numQuestions={numQuestions}
+              />
+              <PreviousButton
+                dispatch={dispatch}
+                // answer={answer}
+                answer={answers[index]}
+                index={index}
               />
             </Footer>
           </>
