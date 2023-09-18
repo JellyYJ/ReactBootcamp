@@ -1,4 +1,5 @@
 import { useEffect, useReducer } from "react";
+
 import Header from "./Header";
 import Loader from "./Loader";
 import Error from "./Error";
@@ -8,10 +9,17 @@ import Question from "./Question";
 import NextButton from "./NextButton";
 import Progress from "./Progress";
 import Finish from "./Finish";
+import Timer from "./Timer";
+import Footer from "./Footer";
+
+const TIME_PER_QUESTION = 30;
 
 // ********************************* */
 // useReducer Hook takes two augments:
 // 1. A reducer function 2. An initial state
+
+// This is the initial state
+// avoiding re-create initial states
 const initalState = {
   questions: [],
   // 'loading', 'error', 'ready', 'active', 'finish'
@@ -20,8 +28,13 @@ const initalState = {
   answer: null,
   points: 0,
   highScore: 0,
+  secondRemaining: null,
 };
 
+// This is the reducer function
+// Warning:
+// NO mutation to the exsiting state/object
+// Instead, need to return new object
 function reducer(state, action) {
   switch (action.type) {
     case "dataReceived":
@@ -40,6 +53,7 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
+        secondRemaining: state.questions.length * TIME_PER_QUESTION,
       };
     case "newAnswer":
       const question = state.questions.at(state.index);
@@ -79,7 +93,12 @@ function reducer(state, action) {
     //   answer: null,
     //   statuse: "ready",
     // };
-
+    case "clock":
+      return {
+        ...state,
+        secondRemaining: state.secondRemaining - 1,
+        status: state.secondRemaining === 0 ? "finished" : state.status,
+      };
     default:
       throw new Error("Action unkown");
   }
@@ -87,8 +106,10 @@ function reducer(state, action) {
 
 export default function App() {
   // Uncontruct the states
-  const [{ questions, status, index, answer, points, highScore }, dispatch] =
-    useReducer(reducer, initalState);
+  const [
+    { questions, status, index, answer, points, highScore, secondRemaining },
+    dispatch,
+  ] = useReducer(reducer, initalState);
 
   const numQuestions = questions.length;
   // array.reduce(callback, initialValue) generic JS fucntion
@@ -127,12 +148,15 @@ export default function App() {
               answer={answer}
             />
 
-            <NextButton
-              dispatch={dispatch}
-              answer={answer}
-              index={index}
-              numQuestions={numQuestions}
-            />
+            <Footer>
+              <Timer dispatch={dispatch} secondRemaining={secondRemaining} />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                numQuestions={numQuestions}
+              />
+            </Footer>
           </>
         )}
 
