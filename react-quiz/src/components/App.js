@@ -141,7 +141,6 @@ export default function App() {
   return (
     <div className="app">
       <Header />
-
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
