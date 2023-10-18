@@ -14,11 +14,12 @@ import Button from "./Button";
 
 import { useCities } from "../contexts/CitiesContext";
 import { useGeolocation } from "../hooks/useGeolocation";
+import { useURLposition } from "../hooks/useURLposition";
 
 function Map() {
   const { cities } = useCities();
 
-  // use geolocation customised hook
+  // useGeolocation customised hook
   const {
     isLoading: isLoadingPos,
     position: geolocationPos,
@@ -26,20 +27,24 @@ function Map() {
   } = useGeolocation();
 
   const [mapPosition, setMapPosition] = useState([40, 0]);
-  const [searchParams] = useSearchParams();
 
+  /* Moved to useURLposition.js */
   // get lat, lng from URL
-  const mapLat = searchParams.get("lat");
-  const mapLng = searchParams.get("lng");
+  // const [searchParams] = useSearchParams();
+  // const mapLat = searchParams.get("lat");
+  // const mapLng = searchParams.get("lng");
 
-  useEffect(
-    function () {
-      if ((mapLat, mapLng)) {
-        setMapPosition([mapLat, mapLng]);
-      }
-    },
-    [mapLat, mapLng]
-  );
+  // useEffect(
+  //   function () {
+  //     if ((mapLat, mapLng)) {
+  //       setMapPosition([mapLat, mapLng]);
+  //     }
+  //   },
+  //   [mapLat, mapLng]
+  // );
+
+  // useURLposition costumised hook
+  // const [mapLat, mapLng] = useURLposition();
 
   // get current geolocation
   useEffect(

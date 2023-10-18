@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, useContext } from "react";
-
 const BASE_URL = "http://localhost:8000";
 
 const CitiesContext = createContext();
@@ -38,8 +37,32 @@ function CitiesProvider({ children }) {
     }
   }
 
+  // Create city
+  async function createCity(newCity) {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${BASE_URL}/cities`, {
+        // basic code for sending data to an API
+        method: "POST",
+        body: JSON.stringify(newCity),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = res.json();
+      // console.log(data);
+      setCities((cities) => [...cities, data]);
+    } catch {
+      alert("There was an error loading data");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
-    <CitiesContext.Provider value={{ cities, isLoading, currentCity, getCity }}>
+    <CitiesContext.Provider
+      value={{ cities, isLoading, currentCity, getCity, createCity }}
+    >
       {children}
     </CitiesContext.Provider>
   );
