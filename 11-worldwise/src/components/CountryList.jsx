@@ -3,7 +3,8 @@ import Spinner from "./Spinner";
 import Message from "./Message";
 import CountryItem from "./CountryItem";
 
-import { useCities } from "../contexts/CitiesContext";
+// import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/AdvancedCitiesContext";
 
 function CountryList() {
   const { cities, isLoading } = useCities();

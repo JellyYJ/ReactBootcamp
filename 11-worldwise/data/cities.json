@@ -35,6 +35,30 @@
         "lng": 13.376933665713324
       },
       "id": 98443197
+    },
+    {
+      "cityName": "Dublin",
+      "country": "Ireland",
+      "emoji": "🇮🇪",
+      "date": "2023-10-18T11:06:12.038Z",
+      "notes": "",
+      "position": {
+        "lat": "53.34335249658393",
+        "lng": "-6.234407284235891"
+      },
+      "id": 98443198
+    },
+    {
+      "cityName": "Newcastle upon Tyne",
+      "country": "United Kingdom of Great Britain and Northern Ireland (the)",
+      "emoji": "🇬🇧",
+      "date": "2023-10-18T11:06:18.633Z",
+      "notes": "",
+      "position": {
+        "lat": "54.97277646761174",
+        "lng": "-1.6107670454864433"
+      },
+      "id": 98443199
     }
   ]
 }

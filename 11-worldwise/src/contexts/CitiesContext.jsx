@@ -42,7 +42,7 @@ function CitiesProvider({ children }) {
     try {
       setIsLoading(true);
       const res = await fetch(`${BASE_URL}/cities`, {
-        // basic code for sending data to an API
+        // Basic code for sending data to an API
         method: "POST",
         body: JSON.stringify(newCity),
         headers: {
@@ -51,6 +51,7 @@ function CitiesProvider({ children }) {
       });
       const data = res.json();
       // console.log(data);
+      // Add the city our local state
       setCities((cities) => [...cities, data]);
     } catch {
       alert("There was an error loading data");

@@ -12,7 +12,8 @@ import {
 
 import Button from "./Button";
 
-import { useCities } from "../contexts/CitiesContext";
+// import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/AdvancedCitiesContext";
 import { useGeolocation } from "../hooks/useGeolocation";
 import { useURLposition } from "../hooks/useURLposition";
 

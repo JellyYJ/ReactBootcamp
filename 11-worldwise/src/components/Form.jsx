@@ -13,7 +13,8 @@ import Message from "./Message";
 import BackButton from "./BackButton";
 
 import { useURLposition } from "../hooks/useURLposition";
-import { useCities } from "../contexts/CitiesContext";
+// import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/AdvancedCitiesContext";
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
