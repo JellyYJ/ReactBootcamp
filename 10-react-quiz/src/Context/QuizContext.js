@@ -1,7 +1,5 @@
-import { Children } from "react";
 import { useReducer } from "react";
 import { useEffect } from "react";
-import { useState } from "react";
 import { createContext } from "react";
 import { useContext } from "react";
 
@@ -118,7 +116,7 @@ function QuizProvider({ children }) {
 function useQuiz() {
   const context = useContext(QuizContext); // tell React which context we want to read from
   if (context === undefined) {
-    throw new Error("CitiesContext is used outside the CitiesProvider");
+    throw new Error("QuizContext is used outside the QuizProvider");
   }
   return context;
 }

@@ -11,7 +11,7 @@ import NextButton from "./NextButton";
 import PreviousButton from "./PreviousButton";
 import Question from "./Question";
 
-import { useQuiz } from "../Context/QuizContext";
+import { useQuiz } from "../context/QuizContext";
 
 const TIME_PER_QUESTION = 30;
 
