@@ -1,5 +1,10 @@
+import { useQuiz } from "../context/QuizContext";
+
 // Decide if it wants to render itself or not
-function NextButton({ dispatch, answer, index, numQuestions }) {
+function NextButton() {
+  const { dispatch, answers, index, numQuestions } = useQuiz();
+  const answer = answers.at(index);
+
   if (answer === null) return null;
 
   if (index < numQuestions - 1)

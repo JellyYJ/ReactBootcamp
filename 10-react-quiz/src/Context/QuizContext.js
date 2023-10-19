@@ -90,31 +90,44 @@ function reducer(state, action) {
 }
 
 function QuizProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [
+    { questions, status, index, answers, points, highScore, secondRemaining },
+    dispatch,
+  ] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    // Fetch data from your API or wherever you get your quiz questions
+  const numQuestions = questions.length;
+  const maxPoints = questions.reduce((prev, cur) => prev + cur.points, 0);
+
+  useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
-      .then((data) => {
-        // Dispatch the dataReceived action to update the state with the received questions
-        dispatch({ type: "dataReceived", payload: data });
-      })
-      .catch((err) => {
-        // Dispatch the dataFailed action in case of an error
-        dispatch({ type: "dataFailed" });
-      });
-  }, [dispatch]);
+      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .catch((err) => dispatch({ type: "dataFailed" }));
+  }, []);
 
   return (
-    <QuizContext.Provider value={{ state, dispatch }}>
+    <QuizContext.Provider
+      value={{
+        questions,
+        status,
+        index,
+        answers,
+        points,
+        highScore,
+        secondRemaining,
+        numQuestions,
+        maxPoints,
+
+        dispatch,
+      }}
+    >
       {children}
     </QuizContext.Provider>
   );
 }
 
 function useQuiz() {
-  const context = useContext(QuizContext); // tell React which context we want to read from
+  const context = useContext(QuizContext);
   if (context === undefined) {
     throw new Error("QuizContext is used outside the QuizProvider");
   }

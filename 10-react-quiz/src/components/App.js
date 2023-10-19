@@ -10,67 +10,32 @@ import Progress from "./Progress";
 import NextButton from "./NextButton";
 import PreviousButton from "./PreviousButton";
 import Question from "./Question";
+import Footer from "./Footer";
 
 import { useQuiz } from "../context/QuizContext";
 
-const TIME_PER_QUESTION = 30;
-
 function App() {
-  const { state, dispatch } = useQuiz();
-
-  const numQuestions = state.questions.length;
-  const maxPoints = state.questions.reduce((prev, cur) => prev + cur.points, 0);
+  const { status } = useQuiz();
 
   return (
     <div className="app">
       <Header />
       <Main>
-        {state.status === "loading" && <Loader />}
-        {state.status === "error" && <Error />}
-        {state.status === "ready" && (
-          <Start numQuestions={numQuestions} dispatch={dispatch} />
-        )}
-        {state.status === "active" && (
+        {status === "loading" && <Loader />}
+        {status === "error" && <Error />}
+        {status === "ready" && <Start />}
+        {status === "active" && (
           <>
-            <Progress
-              index={state.index}
-              numQuestions={numQuestions}
-              points={state.points}
-              maxPoints={maxPoints}
-              answer={state.answers[state.index]}
-            />
-            <Question
-              question={state.questions[state.index]}
-              dispatch={dispatch}
-              answer={state.answers[state.index]}
-            />
-            <div>
-              <Timer
-                dispatch={dispatch}
-                secondRemaining={state.secondRemaining}
-              />
-              <NextButton
-                dispatch={dispatch}
-                answer={state.answers[state.index]}
-                index={state.index}
-                numQuestions={numQuestions}
-              />
-              <PreviousButton
-                dispatch={dispatch}
-                answer={state.answers[state.index]}
-                index={state.index}
-              />
-            </div>
+            <Progress />
+            <Question />
+            <Footer>
+              <Timer />
+              <NextButton />
+              <PreviousButton />
+            </Footer>
           </>
         )}
-        {state.status === "finished" && (
-          <Finish
-            dispatch={dispatch}
-            points={state.points}
-            maxPoints={maxPoints}
-            highScore={state.highScore}
-          />
-        )}
+        {status === "finished" && <Finish />}
       </Main>
     </div>
   );
