@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage";
 import PageNotFound from "./pages/PageNotFound";
 import AppLayout from "./pages/AppLayout";
 import Login from "./pages/Login";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 import City from "./components/City";
 import CityList from "./components/CityList";
@@ -23,7 +24,14 @@ function AppContext() {
         <BrowserRouter>
           <Routes>
             <Route index element={<Homepage />} />;
-            <Route path="app" element={<AppLayout />}>
+            <Route
+              path="app"
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Navigate replace to="cities" />} />
               <Route path="cities" element={<CityList />} />
               <Route path="cities/:id" element={<City />} />
