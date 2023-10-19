@@ -16,7 +16,7 @@ import { useURLposition } from "../hooks/useURLposition";
 // import { useCities } from "../contexts/CitiesContext";
 import { useCities } from "../contexts/AdvancedCitiesContext";
 
-export function convertToEmoji(countryCode) {
+function convertToEmoji(countryCode) {
   const codePoints = countryCode
     .toUpperCase()
     .split("")
