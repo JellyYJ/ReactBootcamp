@@ -11,8 +11,9 @@ function createRandomPost() {
 }
 
 function APPcontextAdvanced() {
-  const x = usePosts();
-  console.log(x);
+  // Showing Undefined bug
+  // const x = usePosts();
+  // console.log(x);
 
   const [isFakeDark, setIsFakeDark] = useState(false);
 
