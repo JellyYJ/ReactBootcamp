@@ -12,21 +12,21 @@ import Form from "./components/Form";
 import SpinnerFullPage from "./components/SpinnerFullPage";
 
 // Implement Lazy Loading
-// const Homepage = lazy("./pages/Homepage");
-// const Product = lazy("./pages/Product");
-// const Pricing = lazy("./pages/Pricing");
-// const Login = lazy("./pages/Login");
-// const PageNotFound = lazy("./pages/PageNotFound");
-// const AppLayout = lazy("./pages/AppLayout");
-// const ProtectedRoute = lazy("./pages/ProtectedRoute");
+const Homepage = lazy(() => import("./pages/Homepage"));
+const Product = lazy(() => import("./pages/Product"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Login = lazy(() => import("./pages/Login"));
+const PageNotFound = lazy(() => import("./pages/PageNotFound"));
+const AppLayout = lazy(() => import("./pages/AppLayout"));
+const ProtectedRoute = lazy(() => import("./pages/ProtectedRoute"));
 
-import Product from "./pages/Product";
-import Pricing from "./pages/Pricing";
-import Homepage from "./pages/Homepage";
-import PageNotFound from "./pages/PageNotFound";
-import AppLayout from "./pages/AppLayout";
-import Login from "./pages/Login";
-import ProtectedRoute from "./pages/ProtectedRoute";
+// import Product from "./pages/Product";
+// import Pricing from "./pages/Pricing";
+// import Homepage from "./pages/Homepage";
+// import PageNotFound from "./pages/PageNotFound";
+// import AppLayout from "./pages/AppLayout";
+// import Login from "./pages/Login";
+// import ProtectedRoute from "./pages/ProtectedRoute";
 
 function AppContext() {
   return (
