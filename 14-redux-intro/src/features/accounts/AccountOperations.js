@@ -12,16 +12,17 @@ function AccountOperations() {
 
   const dispatch = useDispatch();
   const {
-    balance,
     loan: currentLoan,
     loanPurpose: currentLoanPurpose,
+    balance,
+    isLoading,
   } = useSelector((state) => state.account);
-  console.log(balance, currentLoan, currentLoanPurpose);
 
   function handleDeposit() {
     if (!depositAmount) return;
-    dispatch(deposit(depositAmount));
+    dispatch(deposit(depositAmount, currency));
     setDepositAmount("");
+    setCurrency("USD");
   }
 
   function handleWithdrawal() {
@@ -50,6 +51,7 @@ function AccountOperations() {
           <input
             type="number"
             value={depositAmount}
+            // "+" is a shorthand method for type coercion in JS
             onChange={(e) => setDepositAmount(+e.target.value)}
           />
           <select
@@ -61,7 +63,9 @@ function AccountOperations() {
             <option value="GBP">British Pound</option>
           </select>
 
-          <button onClick={handleDeposit}>Deposit {depositAmount}</button>
+          <button onClick={handleDeposit} disabled={isLoading}>
+            {isLoading ? "Coverting currency" : `Deposit ${depositAmount}`}
+          </button>
         </div>
 
         <div>
@@ -81,7 +85,7 @@ function AccountOperations() {
           <input
             type="number"
             value={loanAmount}
-            onChange={(e) => setLoanAmount(e.target.value)}
+            onChange={(e) => setLoanAmount(+e.target.value)}
             placeholder="Loan amount"
           />
           <input
