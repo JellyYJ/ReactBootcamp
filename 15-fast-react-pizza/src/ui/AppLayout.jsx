@@ -6,7 +6,7 @@ import CartOverview from "../featrues/cart/CartOverview";
 
 function AppLayout() {
   const navigation = useNavigation();
-  console.log(navigation);
+  // console.log(navigation);
   const isLoading = navigation.state === "loading";
 
   return (
