@@ -1,4 +1,4 @@
-import { Form, redirect, useLoaderData, useNavigation } from "react-router-dom";
+import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 
 // https://uibakery.io/regex-library/phone-number
@@ -35,6 +35,8 @@ function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
+  const formErrors = useActionData(); // Get access to the errors while the action
+
   // const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart;
 
@@ -53,6 +55,7 @@ function CreateOrder() {
           <div>
             <input type="tel" name="phone" required />
           </div>
+          {formErrors?.phone && <p>{formErrors?.phone}</p>}
         </div>
 
         <div>
@@ -88,17 +91,25 @@ function CreateOrder() {
 export async function action({ request }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  console.log(data.cart);
+  // console.log(data.cart);
 
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
     priority: data.priority === "on",
   };
+  // Error Handling
+  const errors = {};
+  if (!isValidPhone(order.phone)) {
+    errors.phone = "Please provide correct phone number for us to contact you.";
+  }
 
+  if (Object.keys(errors).length > 0) return errors;
+
+  // Creating new order
   const newOrder = await createOrder(order);
-  // We cannot call hooks (navigate) inside this function
-  // Instead we use redirect() to direct to the order page
+
+  // NOTE: We cannot call hooks (navigate) inside this function, instead we use redirect() to direct to the order page
   return redirect(`/order/${newOrder.id}`);
 }
 
