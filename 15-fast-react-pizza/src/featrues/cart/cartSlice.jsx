@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  // cart: [],
-  cart: [
-    {
-      pizzaId: 111,
-      name: 'FungiParadise',
-      quantity: 2,
-      unitPrice: 14.5,
-      totalPrice: 29,
-    },
-  ],
+  cart: [],
+  // cart: [
+  //   {
+  //     pizzaId: 111,
+  //     name: 'FungiParadise',
+  //     quantity: 2,
+  //     unitPrice: 14.5,
+  //     totalPrice: 29,
+  //   },
+  // ],
 };
 
 const cartSlice = createSlice({
@@ -36,6 +36,9 @@ const cartSlice = createSlice({
       const item = state.cart.find((item) => item.pizzaId === action.payload);
       item.quantity--;
       item.totalPrice = item.quantity * item.unitPrice;
+      // A nice trick!!
+      // use delete reducer directly rather than rewriting the same function
+      if (item.quantity === 0) cartSlice.caseReducers.deleteItem(state, action);
     },
     clearCart(state) {
       state.cart = [];
@@ -52,6 +55,13 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
+export const getCart = (state) => state.cart.cart;
+export const getCurrentQuantityById = (id) => (state) => {
+  const quantity =
+    state.cart.cart.find((item) => item.pizzaId === id)?.quantity ?? 0;
+  return quantity;
+};
 
 /* reduce function is a hihger-order function in JS that is used to
   accumulate a single result form a collection(an array here)
