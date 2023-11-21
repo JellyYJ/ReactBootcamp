@@ -76,7 +76,6 @@ function CreateOrder() {
 
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Address</label>
-
           <div className="grow">
             <input
               className="input w-full"
@@ -86,6 +85,11 @@ function CreateOrder() {
               defaultValue={address}
               required
             />
+            {addressStatus === 'error' && (
+              <p className="mt-2 rounded-md bg-red-100 p-1.5 text-xs text-red-700">
+                {errorAddress}
+              </p>
+            )}
 
             {!position.latitude && !position.longitude && (
               <div className="mt-2 flex flex-row items-start gap-2">
@@ -96,12 +100,6 @@ function CreateOrder() {
                 >
                   Get Position
                 </Button>
-
-                {addressStatus === 'error' && (
-                  <p className="mt-2 rounded-md bg-red-100 p-1.5 text-xs text-red-700">
-                    {errorAddress}
-                  </p>
-                )}
               </div>
             )}
           </div>
