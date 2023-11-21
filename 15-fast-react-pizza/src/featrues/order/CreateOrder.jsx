@@ -23,15 +23,15 @@ function CreateOrder() {
   const formErrors = useActionData(); // Get access to the errors while the action
   const dispatch = useDispatch();
 
-  // const {
-  //   username,
-  //   status: addressStatus,
-  //   position,
-  //   address,
-  //   error: errorAddress,
-  // } = useSelector((state) => state.user);
+  const {
+    username,
+    status: addressStatus,
+    position,
+    address,
+    error: errorAddress,
+  } = useSelector((state) => state.user);
+  const isLoadingAddress = addressStatus === 'loading';
 
-  const username = useSelector((state) => state.user.username);
   const cart = useSelector(getCart);
   const totoalCartPrice = useSelector(getTotalCartPrice);
   const priorityPrice = withPriority ? totoalCartPrice * 0.2 : 0;
@@ -39,11 +39,14 @@ function CreateOrder() {
 
   if (!cart.length) return <EmptyCart />;
 
+  function handleGetPosition(e) {
+    e.preventDefault();
+    dispatch(fetchAddress());
+  }
+
   return (
     <div className="px-4 py-6">
       <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
-
-      <button onClick={() => dispatch(fetchAddress())}>Get Pos</button>
 
       <Form method="POST">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -73,13 +76,34 @@ function CreateOrder() {
 
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Address</label>
+
           <div className="grow">
             <input
               className="input w-full"
               type="text"
               name="address"
+              disabled={isLoadingAddress}
+              defaultValue={address}
               required
             />
+
+            {!position.latitude && !position.longitude && (
+              <div className="mt-2 flex flex-row items-start gap-2">
+                <Button
+                  type="small"
+                  disabled={isLoadingAddress}
+                  onClick={handleGetPosition}
+                >
+                  Get Position
+                </Button>
+
+                {addressStatus === 'error' && (
+                  <p className="mt-2 rounded-md bg-red-100 p-1.5 text-xs text-red-700">
+                    {errorAddress}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -97,8 +121,17 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input
+            type="hidden"
+            name="position"
+            value={
+              position.longitude && position.latitude
+                ? `${position.latitude}, ${position.longitude}`
+                : ''
+            }
+          />
           <Button type="primary" disabled={isSubmitting}>
-            {isSubmitting
+            {isSubmitting || isLoadingAddress
               ? 'Order Placed...'
               : `Order Now for ${formatCurrency(totalPrice)}`}
           </Button>
