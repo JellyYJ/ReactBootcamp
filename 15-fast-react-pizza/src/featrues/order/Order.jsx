@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFetcher, useLoaderData } from 'react-router-dom';
 import { getOrder } from '../../services/apiRestaurant';
 import OrderItem from './OrderItem';
@@ -8,7 +9,8 @@ import {
   formatCurrency,
   formatDate,
 } from '../../utils/helpers';
-import { useEffect } from 'react';
+
+import UpdateOrder from './UpdateOrder';
 
 function Order() {
   const order = useLoaderData();
@@ -52,7 +54,6 @@ function Order() {
           </span>
         </div>
       </div>
-
       <div className="flex flex-col justify-between space-y-2 bg-stone-200 px-6 py-5 sm:flex-row sm:items-center">
         <p className="text-sm font-semibold text-stone-800">
           {deliveryIn >= 0
@@ -63,7 +64,6 @@ function Order() {
           (Estimated delivery: {formatDate(estimatedDelivery)})
         </p>
       </div>
-
       <ul className="space-y-2 divide-y divide-stone-200 border-b border-t border-stone-200">
         {cart.map((item) => (
           <OrderItem
@@ -77,7 +77,6 @@ function Order() {
           />
         ))}
       </ul>
-
       <div className="space-y-2 bg-stone-200 px-6 py-5">
         <p className="text-sm font-semibold text-stone-600">
           Price pizza: {formatCurrency(orderPrice)}
@@ -91,6 +90,8 @@ function Order() {
           To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
+
+      {!priority && <UpdateOrder order={order} />}
     </div>
   );
 }

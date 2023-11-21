@@ -9,6 +9,7 @@ import CreateOrder, {
 } from './featrues/order/CreateOrder';
 import Order, { loader as orderLoader } from './featrues/order/Order';
 import AppLayout from './ui/AppLayout';
+import { action as upadateOrderAction } from './featrues/order/UpdateOrder';
 
 /* Fetching Data with Loaders
    1: Create Loaders
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
         element: <Order />,
         loader: orderLoader,
         errorElement: <Error />,
+        action: upadateOrderAction,
       },
     ],
   },
