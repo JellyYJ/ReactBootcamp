@@ -1,15 +1,18 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-function EmptyCart() {
+const EmptyCart = () => {
   return (
     <div className="px-4 py-3">
-      <Link to="/menu">&larr; Back to menu</Link>
+      <Link to="/menu" className="text-blue-500 hover:underline">
+        &larr; Back to menu
+      </Link>
 
-      <p className="mt-7 font-semibold">
-        Your cart is still empty. Start adding some pizzas :)
-      </p>
+      <div className="mt-6 text-center text-lg">
+        Your cart is still empty. Start adding some pizzas 😊
+      </div>
     </div>
   );
-}
+};
 
 export default EmptyCart;
