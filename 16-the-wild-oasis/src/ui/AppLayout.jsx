@@ -23,7 +23,7 @@ function AppLayout() {
       <Header />
       <Sidebar />
       <Main>
-        <Outlet />
+        <Outlet /> {/* This is where child routes will be rendered */}
       </Main>
 
       <Footer />
