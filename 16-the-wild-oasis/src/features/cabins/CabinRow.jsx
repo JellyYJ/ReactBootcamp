@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
+import CreateCabinForm from "./CreateCabinForm";
 import { deteleCabin } from "../../services/apiCabins";
 import { formatCurrency } from "../../utils/helpers";
 
@@ -44,6 +46,8 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
+  const [showForm, setShowForm] = useState(false);
+
   const {
     id: cabinId,
     name,
@@ -69,17 +73,27 @@ function CabinRow({ cabin }) {
   });
 
   return (
-    <TableRow role="row">
-      <Img src={image}></Img>
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} people</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
+    <>
+      <TableRow role="row">
+        <Img src={image}></Img>
+        <Cabin>{name}</Cabin>
+        <div>Fits up to {maxCapacity} people</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>--</span>
+        )}
 
-      <button disabled={isDeleting} onClick={() => mutate(cabinId)}>
-        Delete
-      </button>
-    </TableRow>
+        <div>
+          <button onClick={() => setShowForm((show) => !show)}>Edit</button>
+          <button disabled={isDeleting} onClick={() => mutate(cabinId)}>
+            Delete
+          </button>
+        </div>
+      </TableRow>
+      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+    </>
   );
 }
 
