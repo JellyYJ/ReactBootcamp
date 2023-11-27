@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-import CreateCabinForm from "./CreateCabinForm";
-import { deteleCabin } from "../../services/apiCabins";
 import { formatCurrency } from "../../utils/helpers";
+import CreateCabinForm from "./CreateCabinForm";
+import { useDeleteCabin } from "./useDeleteCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -46,6 +45,8 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
+  const { isDeleting, deleteCabin } = useDeleteCabin();
+
   const [showForm, setShowForm] = useState(false);
 
   const {
@@ -56,21 +57,6 @@ function CabinRow({ cabin }) {
     discount,
     image,
   } = cabin;
-
-  // Get QueryClient from the context (App.jsx)
-  const queryClient = useQueryClient();
-  const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: deteleCabin,
-    onSuccess: () => {
-      alert("Cabin successfully deleted");
-      // QueryClient has an invalidateQueries method that lets you intelligently mark queries as stale and potentially refetch them too!
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-
-    onError: (err) => alert(err.message),
-  });
 
   return (
     <>
@@ -87,7 +73,7 @@ function CabinRow({ cabin }) {
 
         <div>
           <button onClick={() => setShowForm((show) => !show)}>Edit</button>
-          <button disabled={isDeleting} onClick={() => mutate(cabinId)}>
+          <button disabled={isDeleting} onClick={() => deleteCabin(cabinId)}>
             Delete
           </button>
         </div>
