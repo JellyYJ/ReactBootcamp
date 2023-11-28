@@ -33,20 +33,26 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     if (isEditSession) {
       editCabin(
         { newCabinData: { ...data, image }, id: editId },
-        { onSuccess: () => reset() }
+        {
+          onSuccess: (data) => {
+            reset();
+          },
+        }
       );
     } else {
       createCabin(
-        { ...data, image },
+        { ...data, image: image },
         {
-          onSuccess: () => reset(),
+          onSuccess: (data) => {
+            reset();
+          },
         }
       );
     }
   }
 
   function onError(errors) {
-    console.log(errors);
+    // console.log(errors);
   }
 
   return (
@@ -119,12 +125,14 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         />
       </FormRow>
 
-      <FormRow label="Cabin Photo">
+      <FormRow label="Cabin photo">
         <FileInput
           id="image"
           accept="image/*"
           type="file"
-          {...register("image", { required: "This field is required" })}
+          {...register("image", {
+            required: isEditSession ? false : "This field is required",
+          })}
         />
       </FormRow>
 

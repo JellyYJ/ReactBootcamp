@@ -13,7 +13,6 @@ export async function getCabins() {
 
 export async function addOrEditCabin(newCabin, id) {
   // console.log(newCabin, id);
-
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl);
 
   //an example path: https://deygkmjhmenfbmocefki.supabase.co/storage/v1/object/public/cabin_img/cabin-001.jpg
@@ -29,6 +28,7 @@ export async function addOrEditCabin(newCabin, id) {
 
   // Step1: create a new cabin
   let query = supabase.from("cabins");
+
   // a) adding a new cabin
   if (!id) {
     query = query.insert([{ ...newCabin, image: imagePath }]);
@@ -49,6 +49,8 @@ export async function addOrEditCabin(newCabin, id) {
 
   // Step2: after successfully created a cabin, upload an image
   // docs link: https://supabase.com/docs/reference/javascript/auth-admin-generatelink
+  if (hasImagePath) return data; // if there is an image already, return immediately
+
   const { error: storageError } = await supabase.storage
     .from("cabin_img")
     .upload(imageName, newCabin.image);
@@ -64,9 +66,12 @@ export async function addOrEditCabin(newCabin, id) {
 }
 
 export async function deteleCabin(id) {
-  const { error } = await supabase.from("cabins").delete().eq("id", id);
+  const { data, error } = await supabase.from("cabins").delete().eq("id", id);
+
   if (error) {
     console.error(error);
     throw new Error("Cabins failed to be deleted");
   }
+
+  return data;
 }
