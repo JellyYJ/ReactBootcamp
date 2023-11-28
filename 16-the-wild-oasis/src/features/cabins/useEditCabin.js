@@ -9,7 +9,7 @@ export function useEditCabin() {
   const { mutate: editCabin, isLoading: isEditing } = useMutation({
     mutationFn: ({ newCabinData, id }) => addOrEditCabin(newCabinData, id),
     onSuccess: () => {
-      alert("The cabin has been editted successfully");
+      alert("The cabin has been edited successfully");
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
     onError: (err) => alert(err.message),
