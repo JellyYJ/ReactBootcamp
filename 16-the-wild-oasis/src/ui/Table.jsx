@@ -88,13 +88,9 @@ function Row({ children }) {
   );
 }
 
-function Body({ children }) {
-  const { columns } = useContext(TableContext);
-  return (
-    <StyledBody role="row" as="body" columns={columns}>
-      {children}
-    </StyledBody>
-  );
+function Body({ data, render }) {
+  if (!data.length) return <Empty>No data at the moment</Empty>;
+  return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
 Table.Row = Row;
