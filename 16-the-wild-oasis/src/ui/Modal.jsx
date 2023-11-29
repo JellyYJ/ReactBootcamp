@@ -2,6 +2,7 @@ import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import useDetectClickOutside from "../hooks/useDetectClickOutside";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -54,6 +55,7 @@ const Button = styled.button`
 
 // Compound Component
 const ModalContext = createContext();
+
 export default function Modal({ children }) {
   const [openName, setOpenName] = useState("");
 
@@ -80,11 +82,14 @@ function Open({ children, opens: openWindowName }) {
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
+
+  const ref = useDetectClickOutside(close);
+
   if (name !== openName) return null; // it is not the window we want to open, return nothing
 
   return createPortal(
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <Button onClick={close}>
           <HiXMark />
         </Button>
