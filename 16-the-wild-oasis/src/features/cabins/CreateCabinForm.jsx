@@ -36,6 +36,7 @@ function CreateCabinForm({ cabinToEdit = {}, onClose }) {
         {
           onSuccess: (data) => {
             reset();
+            onClose?.(); // conditional chaining, if the funcation does not exsit just do nothing
           },
         }
       );
@@ -45,7 +46,7 @@ function CreateCabinForm({ cabinToEdit = {}, onClose }) {
         {
           onSuccess: (data) => {
             reset();
-            onClose?.(); // conditional chaining, if the funcation does not exsit just do nothing
+            onClose?.();
           },
         }
       );

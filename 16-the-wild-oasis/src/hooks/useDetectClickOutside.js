@@ -7,7 +7,7 @@ function useDetectClickOutside(handler, listenCapturing = true) {
       function handleDetectClick(e) {
         // ref is the Window
         if (ref.current && !ref.current.contains(e.target)) {
-          console.log("Click Outsie");
+          // console.log("Click Outsie");
           handler();
         }
       }

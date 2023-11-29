@@ -56,19 +56,6 @@ const Button = styled.button`
 // Compound Component
 const ModalContext = createContext();
 
-export default function Modal({ children }) {
-  const [openName, setOpenName] = useState("");
-
-  const close = () => setOpenName("");
-  const open = setOpenName;
-
-  return (
-    <ModalContext.Provider value={{ openName, open, close }}>
-      {children}
-    </ModalContext.Provider>
-  );
-}
-
 // Need access to the open function
 function Open({ children, opens: openWindowName }) {
   const { open } = useContext(ModalContext);
@@ -82,7 +69,6 @@ function Open({ children, opens: openWindowName }) {
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
-
   const ref = useDetectClickOutside(close);
 
   if (name !== openName) return null; // it is not the window we want to open, return nothing
@@ -101,6 +87,21 @@ function Window({ children, name }) {
   );
 }
 
+function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ openName, open, close }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
 // Assign functions
 Modal.Open = Open;
 Modal.Window = Window;
+
+export default Modal;
