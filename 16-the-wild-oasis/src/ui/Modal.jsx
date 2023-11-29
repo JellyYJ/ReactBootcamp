@@ -1,3 +1,4 @@
+import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
@@ -51,17 +52,50 @@ const Button = styled.button`
   }
 `;
 
-// Introducation to React Portal
-export default function Modal({ children, onClose }) {
+// Compound Component
+const ModalContext = createContext();
+export default function Modal({ children }) {
+  const [openName, setOpenName] = useState("");
+
+  const close = () => setOpenName("");
+  const open = setOpenName;
+
+  return (
+    <ModalContext.Provider value={{ openName, open, close }}>
+      {children}
+    </ModalContext.Provider>
+  );
+}
+
+// Need access to the open function
+function Open({ children, opens: openWindowName }) {
+  const { open } = useContext(ModalContext);
+
+  // To allow the button to work without passing in any props
+  // We need CloneElement, which is an uncommon tool
+  // Eg: const clonedElement = cloneElement(element, props, ...children)
+  // Here we pass in a onClick prop, which will call the function to open the window
+  return cloneElement(children, { onClick: () => open(openWindowName) }); // return what we passed in this function
+}
+
+function Window({ children, name }) {
+  const { openName, close } = useContext(ModalContext);
+  if (name !== openName) return null; // it is not the window we want to open, return nothing
+
   return createPortal(
     <Overlay>
       <StyledModal>
-        <Button onClick={onClose}>
+        <Button onClick={close}>
           <HiXMark />
         </Button>
-        <div>{children}</div>
+
+        <div>{cloneElement(children, { onClose: close })}</div>
       </StyledModal>
     </Overlay>,
     document.body
   );
 }
+
+// Assign functions
+Modal.Open = Open;
+Modal.Window = Window;
