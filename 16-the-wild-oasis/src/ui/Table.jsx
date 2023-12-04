@@ -79,6 +79,7 @@ function Header({ children }) {
     </StyledHeader>
   );
 }
+
 function Row({ children }) {
   const { columns } = useContext(TableContext);
   return (
