@@ -9,6 +9,7 @@ export async function getBookings() {
     .select(
       "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)"
     );
+  // .eq("status", "");
 
   if (error) {
     console.log(error);

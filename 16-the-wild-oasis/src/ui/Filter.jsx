@@ -35,13 +35,13 @@ const FilterButton = styled.button`
   }
 `;
 
-function Filter({ filterFiled, options }) {
+function Filter({ filterField, options }) {
   // Store the value in the URL
   const [searchParams, setSearchParams] = useSearchParams();
-  const curOption = searchParams.get(filterFiled) || options.at(0).value;
+  const curOption = searchParams.get(filterField) || options.at(0).value;
 
   function handleClick(value) {
-    searchParams.set(filterFiled, value);
+    searchParams.set(filterField, value);
     setSearchParams(searchParams);
   }
 
@@ -54,7 +54,7 @@ function Filter({ filterFiled, options }) {
           active={option.value === curOption}
           disabled={option.value === curOption}
         >
-          {option.lable}
+          {option.label}
         </FilterButton>
       ))}
     </StyledFilter>
