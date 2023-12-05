@@ -7,7 +7,7 @@ import { useSearchParams } from "react-router-dom";
 
 function CabinTable() {
   const { isLoading, cabins } = useCabins();
-  const [searchPramas, setSearchParams] = useSearchParams();
+  const [searchPramas] = useSearchParams();
 
   if (isLoading) return <Spinner />;
 

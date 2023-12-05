@@ -1,15 +1,21 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBookings() {
-  // we not only want the IDs of the guest and the cabin
-  // we also want the data
-  let { data, error } = await supabase
+export async function getBookings({ filter, sortBy }) {
+  // we not only want the IDs of the guest and the cabin, we also want the data
+  let query = supabase
     .from("bookings")
     .select(
       "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)"
     );
-  // .eq("status", "");
+
+  // Filter
+  if (filter !== null) {
+    query.eq(filter.field, filter.value);
+    // More flexible way
+    // query = query[filter.method || "eq"](filter.field, filter.value);
+  }
+  const { data, error } = await query;
 
   if (error) {
     console.log(error);
