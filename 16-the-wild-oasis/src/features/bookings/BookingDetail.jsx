@@ -7,8 +7,10 @@ import Tag from "../../ui/Tag";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
+import Spinner from "../../ui/Spinner";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import useBooking from "./useBooking";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -17,7 +19,8 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const booking = {};
+  const { isLoading, booking } = useBooking();
+
   const status = "checked-in";
 
   const moveBack = useMoveBack();
@@ -27,6 +30,8 @@ function BookingDetail() {
     "checked-in": "green",
     "checked-out": "silver",
   };
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>
