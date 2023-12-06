@@ -9,9 +9,9 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import Checkbox from "../../ui/Checkbox";
 import { useMoveBack } from "../../hooks/useMoveBack";
-import useBooking from "../bookings/useBooking";
+import { useBooking } from "../bookings/useBooking";
 import Spinner from "../../ui/Spinner";
-import useCheckIn from "./useCheckIn";
+import { useCheckIn } from "./useCheckIn";
 
 import BookingDataBox from "../../features/bookings/BookingDataBox";
 

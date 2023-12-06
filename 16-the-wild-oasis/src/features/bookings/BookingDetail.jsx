@@ -10,7 +10,7 @@ import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import useBooking from "./useBooking";
+import { useBooking } from "./useBooking";
 import { useNavigate } from "react-router-dom";
 
 const HeadingGroup = styled.div`

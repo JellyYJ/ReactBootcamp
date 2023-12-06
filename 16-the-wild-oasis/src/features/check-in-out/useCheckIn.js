@@ -3,7 +3,7 @@ import { updateBooking } from "../../services/apiBookings";
 import { useNavigate } from "react-router-dom";
 
 // We want to change the status from "uncomfirmed" to "checked-in", also isPaid to true.
-export default function useCheckIn() {
+export function useCheckIn() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
