@@ -16,7 +16,7 @@ const FilterButton = styled.button`
   border: none;
 
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
@@ -42,6 +42,11 @@ function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value);
+    // solve problem: when we are not on the page1, we cannot filter
+    if (searchParams.get("page")) {
+      searchParams.set("page", 1);
+    }
+
     setSearchParams(searchParams);
   }
 
@@ -51,7 +56,7 @@ function Filter({ filterField, options }) {
         <FilterButton
           key={option.value}
           onClick={() => handleClick(option.value)}
-          active={option.value === curOption}
+          $active={option.value === curOption}
           disabled={option.value === curOption}
         >
           {option.label}

@@ -26,8 +26,8 @@ const Buttons = styled.div`
 
 const PaginationButton = styled.button`
   background-color: ${(props) =>
-    props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
-  color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
+    props.$active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
+  color: ${(props) => (props.$active ? " var(--color-brand-50)" : "inherit")};
   border: none;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
@@ -95,11 +95,11 @@ function Pagination({ count }) {
       <Buttons>
         <PaginationButton onClick={previousPage} disabled={curPage === 1}>
           <HiChevronLeft />
-          PREVIOUS
+          <span>PREVIOUS</span>
         </PaginationButton>
 
         <PaginationButton onClick={nextPage} disabled={curPage === numOfPages}>
-          NEXT
+          <span>NEXT</span>
           <HiChevronRight />
         </PaginationButton>
       </Buttons>
