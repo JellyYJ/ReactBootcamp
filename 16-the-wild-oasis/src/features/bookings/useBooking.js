@@ -8,7 +8,10 @@ function useBooking() {
     isLoading,
     data: booking,
     error,
-  } = useQuery({ queryKey: ["booking"], queryFn: () => getBooking(bookingId) });
+  } = useQuery({
+    queryKey: ["booking", bookingId], // very important to include bookingId, otherwise, the booking page will always show the same booking stored in the cache.
+    queryFn: () => getBooking(bookingId),
+  });
 
   return { isLoading, booking, error };
 }

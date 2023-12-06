@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Dashboard from "./pages/Dashboard";
 import Bookings from "./pages/Bookings";
 import Booking from "./pages/Booking";
+import CheckIn from "./pages/CheckIn";
 import Account from "./pages/Account";
 import Cabins from "./pages/Cabins";
 import Login from "./pages/Login";
@@ -37,6 +38,7 @@ function App() {
             <Route element={<Dashboard />} path="dashboard" />
             <Route element={<Bookings />} path="bookings" />
             <Route element={<Booking />} path="bookings/:bookingId" />
+            <Route element={<CheckIn />} path="checkin/:bookingId" />
 
             <Route element={<Cabins />} path="cabins" />
             <Route element={<Settings />} path="settings" />
