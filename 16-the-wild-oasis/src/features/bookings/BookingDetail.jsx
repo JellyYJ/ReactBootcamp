@@ -53,6 +53,10 @@ function BookingDetail() {
           </Button>
         )}
 
+        {status === "checked-in" && (
+          <Button onClick={() => navigate(`/bookings`)}>Check Out</Button>
+        )}
+
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
