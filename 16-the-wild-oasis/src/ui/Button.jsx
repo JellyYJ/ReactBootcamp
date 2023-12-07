@@ -55,16 +55,10 @@ const Button = styled.button`
 
   ${(props) => sizes[props.size]}
   ${(props) => variations[props.variation]}
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--color-brand-800);
-  }
 `;
 
 Button.defaultProps = {
-  variations: "primary",
+  variation: "primary",
   size: "medium",
 };
 
