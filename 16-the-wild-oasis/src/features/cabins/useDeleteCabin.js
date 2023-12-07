@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { toast } from "react-hot-toast";
 import { deteleCabin as deleteCabinAPI } from "../../services/apiCabins";
 
 export function useDeleteCabin() {
@@ -9,14 +9,14 @@ export function useDeleteCabin() {
   const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
     mutationFn: deleteCabinAPI,
     onSuccess: () => {
-      alert("Cabin successfully deleted");
+      toast.success("Cabin successfully deleted");
       // QueryClient has an invalidateQueries method that lets you intelligently mark queries as stale and potentially refetch them too!
       queryClient.invalidateQueries({
         queryKey: ["cabins"],
       });
     },
 
-    onError: (err) => alert(err.message),
+    onError: (err) => toast.error(err.message),
   });
 
   return { isDeleting, deleteCabin };

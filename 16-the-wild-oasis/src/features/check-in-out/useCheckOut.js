@@ -1,4 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+
 import { updateBooking } from "../../services/apiBookings";
 
 export function useCheckOut() {
@@ -11,11 +13,11 @@ export function useCheckOut() {
       }),
 
     onSuccess: (data) => {
-      alert(`Booking #${data.id} successfully checked out`);
+      toast.success(`Booking #${data.id} successfully checked out`);
       queryClient.invalidateQueries({ active: true });
     },
 
-    onError: () => alert("There was an error while checking out"),
+    onError: () => toast.error("There was an error while checking out"),
   });
 
   return { checkout, isCheckingOut };

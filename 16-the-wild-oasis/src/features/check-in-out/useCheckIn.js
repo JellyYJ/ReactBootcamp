@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateBooking } from "../../services/apiBookings";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+
+import { updateBooking } from "../../services/apiBookings";
 
 // We want to change the status from "uncomfirmed" to "checked-in", also isPaid to true.
 export function useCheckIn() {
@@ -16,12 +18,12 @@ export function useCheckIn() {
       }),
 
     onSuccess: (data) => {
-      alert(`Booking #${data.id} is successfully checked in.`);
+      toast.success(`Booking #${data.id} is successfully checked in.`);
       queryClient.invalidateQueries({ active: true });
       navigate("/");
     },
 
-    onError: () => alert("There was an error checking in."),
+    onError: () => toast.error("There was an error checking in."),
   });
 
   return { isCheckingin, checkin };
