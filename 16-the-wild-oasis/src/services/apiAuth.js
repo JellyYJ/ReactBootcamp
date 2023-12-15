@@ -30,3 +30,11 @@ export async function getCurUser() {
 
   return data?.user;
 }
+
+export async function logout() {
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.log(error);
+    throw new Error("There was an erro logging out");
+  }
+}
