@@ -6,22 +6,12 @@ import SpinnerMini from "../../ui/SpinnerMini";
 
 import { useLogout } from "./useLogout";
 
-const LogoutDiv = styled.div`
-  display: flex;
-  align-items: center;
-`;
 function Logout() {
   const { isLoading, logout } = useLogout();
 
   return (
     <ButtonIcon disabled={isLoading} onClick={logout}>
-      {!isLoading ? (
-        <LogoutDiv>
-          <HiArrowRightOnRectangle /> <span>Logout</span>
-        </LogoutDiv>
-      ) : (
-        <SpinnerMini />
-      )}
+      {!isLoading ? <HiArrowRightOnRectangle /> : <SpinnerMini />}
     </ButtonIcon>
   );
 }
