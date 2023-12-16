@@ -1,14 +1,16 @@
-import { useUser } from 'features/authentication/useUser';
-import { useState } from 'react';
-import Button from 'ui/Button';
-import FileInput from 'ui/FileInput';
-import Form from 'ui/Form';
-import FormRow from 'ui/FormRow';
-import Input from 'ui/Input';
-import { useUpdateUser } from './useUpdateUser';
+import { useState } from "react";
+
+import Button from "../../ui/Button";
+import FileInput from "../../ui/FileInput";
+import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
+import Input from "../../ui/Input";
+
+import { useUser } from "./useUser";
+import { useUpdateUser } from "./useUpdateUser";
 
 function UpdateUserDataForm() {
-  // We don't need the loading state
+  // We don't need the loading state, immediately use the user data
   const {
     user: {
       email,
@@ -16,10 +18,9 @@ function UpdateUserDataForm() {
     },
   } = useUser();
 
+  const { updateUser, isUpdating } = useUpdateUser();
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
-
-  const { mutate: updateUser, isLoading: isUpdating } = useUpdateUser();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -45,29 +46,33 @@ function UpdateUserDataForm() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormRow label='Email address'>
-        <Input value={email} disabled />
+      <FormRow label="Email address">
+        <Input value={email} disabled={isUpdating} />
       </FormRow>
-      <FormRow label='Full name'>
+
+      <FormRow label="Full name">
         <Input
-          type='text'
+          type="text"
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           disabled={isUpdating}
-          id='fullName'
+          id="fullName"
         />
       </FormRow>
-      <FormRow label='Avatar image'>
+
+      <FormRow label="Avatar image">
         <FileInput
           disabled={isUpdating}
-          id='avatar'
-          accept='image/*'
+          id="avatar"
+          accept="image/*"
+          type="file"
           onChange={(e) => setAvatar(e.target.files[0])}
           // We should also validate that it's actually an image, but never mind
         />
       </FormRow>
+
       <FormRow>
-        <Button onClick={handleCancel} type='reset' variation='secondary'>
+        <Button onClick={handleCancel} type="reset" variation="secondary">
           Cancel
         </Button>
         <Button disabled={isUpdating}>Update account</Button>
