@@ -7,7 +7,6 @@ import { useUpdateSetting } from "./useUpdateSetting";
 
 function UpdateSettingsForm() {
   const {
-    isLoading,
     settings: {
       minBookingLength,
       maxBookingLength,
@@ -16,7 +15,7 @@ function UpdateSettingsForm() {
     } = {}, // assign an empty array to avoid reading "undefined" error
   } = useSettings();
 
-  const { updateSetting, isUpdating } = useUpdateSetting();
+  const { updateSetting } = useUpdateSetting();
 
   function handleUpdate(e, updateField) {
     const { value } = e.target;

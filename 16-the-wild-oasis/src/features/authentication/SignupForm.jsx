@@ -3,22 +3,25 @@ import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
+import { useSignUp } from "./useSignUp";
 
 // Email regex: /\S+@\S+\.\S+/
 
 // whenever we have a bigger form which needs some validation, it is good to use the useForm lib
 function SignupForm() {
-  const { register, formState, getValues, handleSubmit } = useForm();
+  const { signUp, isLoading } = useSignUp();
+  const { register, formState, getValues, handleSubmit, reset } = useForm();
   const { errors } = formState;
 
-  function onSubmit(data) {
-    console.log(data);
+  function onSubmit({ fullName, email, password }) {
+    signUp({ fullName, email, password }, { onSettled: () => reset() });
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Full name" error={errors?.fullName?.message}>
         <Input
+          disabled={isLoading}
           type="text"
           id="fullName"
           {...register("fullName", {
@@ -29,6 +32,7 @@ function SignupForm() {
 
       <FormRow label="Email address" error={errors?.email?.message}>
         <Input
+          disabled={isLoading}
           type="email"
           id="email"
           {...register("email", {
@@ -46,6 +50,7 @@ function SignupForm() {
         error={errors?.Password?.message}
       >
         <Input
+          disabled={isLoading}
           type="password"
           id="password"
           {...register("password", {
@@ -60,6 +65,7 @@ function SignupForm() {
 
       <FormRow label="Repeat password" error={errors?.passwordConfirm?.message}>
         <Input
+          disabled={isLoading}
           type="password"
           id="passwordConfirm"
           {...register("passwordConfirm", {
@@ -72,10 +78,10 @@ function SignupForm() {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" disabled={isLoading}>
           Cancel
         </Button>
-        <Button>Create new user</Button>
+        <Button disabled={isLoading}>Create new user</Button>
       </FormRow>
     </Form>
   );
