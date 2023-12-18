@@ -17,7 +17,6 @@ function Header() {
   return (
     <StyledHeader>
       <UserAvatar />
-
       <HeaderMenu />
     </StyledHeader>
   );
