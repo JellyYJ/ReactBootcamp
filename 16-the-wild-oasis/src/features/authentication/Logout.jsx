@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { HiArrowRightOnRectangle } from "react-icons/hi2";
 
 import ButtonIcon from "../../ui/ButtonIcon";
