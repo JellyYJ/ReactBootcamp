@@ -87,6 +87,8 @@ function Toggle({ id }) {
   const { curOpenId, close, open, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
+    e.stopPropagation(); // event will not travel up in the DOM, and therefore, will not be seen as a click
+
     // If none is opened or the one we want to open now is not yet opened, OPEN it
     // Otherwise, close it
     const rect = e.target.closest("button").getBoundingClientRect();
@@ -108,7 +110,10 @@ function Toggle({ id }) {
 
 function List({ id, children }) {
   const { curOpenId, position, close } = useContext(MenusContext);
-  const ref = useDetectClickOutside(close);
+  // const ref = useDetectClickOutside(close);
+  const ref = useDetectClickOutside(() => {
+    close();
+  }, false);
 
   if (curOpenId !== id) return null;
 
