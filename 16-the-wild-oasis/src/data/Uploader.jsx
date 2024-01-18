@@ -115,6 +115,21 @@ async function createBookings() {
 function Uploader() {
   const [isLoading, setIsLoading] = useState(false);
 
+  async function uploadAll() {
+    setIsLoading(true);
+    // Bookings need to be deleted FIRST
+    await deleteBookings();
+    await deleteGuests();
+    await deleteCabins();
+
+    // Bookings need to be created LAST
+    await createGuests();
+    await createCabins();
+    await createBookings();
+
+    setIsLoading(false);
+  }
+
   async function uploadBookings() {
     setIsLoading(true);
     await deleteBookings();
@@ -128,6 +143,10 @@ function Uploader() {
 
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings
+      </Button>
+
+      <Button onClick={uploadAll} disabled={isLoading}>
+        Upload ALL
       </Button>
     </StyledUploader>
   );
