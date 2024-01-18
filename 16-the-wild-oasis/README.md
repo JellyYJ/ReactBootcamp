@@ -1,15 +1,12 @@
-# React + Vite
+# The Wild Oasis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Wild Oasis is a practice project designed for learning React. It utilizes Supabase as the database and is deployed on Netlify.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To run the project locally, use the following command:
 
-To run the project
--- npm run dev
-
-You can login using exsiting account:
-email: test@test.com
-password: test1234
+```bash
+npm install
+npm run dev
+```
