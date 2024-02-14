@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function getWeatherIcon(wmoCode) {
   const icons = new Map([
@@ -34,89 +33,113 @@ function formatDay(dateStr) {
 }
 
 export default function App() {
-  const [location, setLocation] = useState(
-    localStorage.getItem("location") || ""
-  );
-  const [isLoading, setIsLoading] = useState(false);
+  const [input, setInput] = useState("");
   const [displayLocation, setDisplayLocation] = useState("");
-  const [weather, setWeather] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [weather, setWeather] = useState({});
+  const [error, setError] = useState("");
 
-  // Save search location in the localStorage
-  useEffect(() => {
-    localStorage.setItem("location", location);
-  }, [location]);
+  // Save location in the localStorage
+  useEffect(function () {
+    setInput(localStorage.getItem("location") || "");
+  }, []);
 
   useEffect(
     function () {
-      async function fetchWeather() {
-        setIsLoading(true);
-
+      const geoController = new AbortController();
+      const weatherController = new AbortController();
+      async function fetchWeatherData() {
         try {
           // 1) Getting location (geocoding)
+          setError("");
+          setIsLoading(true);
           const geoRes = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${location}`
+            `https://geocoding-api.open-meteo.com/v1/search?name=${input}`,
+            { signal: geoController.signal }
           );
+
+          if (!geoRes.ok) {
+            throw new Error("Something went wrong with fetching geolocation");
+          }
+
           const geoData = await geoRes.json();
-          if (!geoData.results) throw new Error("Location not found");
+          if (!geoData.results) {
+            throw new Error("Location not found");
+          }
 
           const { latitude, longitude, timezone, name, country_code } =
             geoData.results.at(0);
+
           setDisplayLocation(`${name} ${convertToFlag(country_code)}`);
 
-          // 2) Getting actual weather
+          // 2) Getting weather
           const weatherRes = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=${timezone}&daily=weathercode,temperature_2m_max,temperature_2m_min`
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=${timezone}&daily=weathercode,temperature_2m_max,temperature_2m_min`,
+            { signal: weatherController.signal }
           );
+
+          if (!weatherRes.ok) {
+            throw new Error("Something went wrong with fetching weather");
+          }
+
           const weatherData = await weatherRes.json();
           setWeather(weatherData.daily);
-          // console.log(weatherData.daily);
         } catch (err) {
-          console.error(err);
+          if (err.name !== "AbortError") {
+            setError(err.message);
+          }
         } finally {
           setIsLoading(false);
         }
       }
 
-      if (location) {
-        fetchWeather();
-      }
-    },
-    [location]
-  );
+      localStorage.setItem("location", input);
 
-  // Save location to localStorage
-  useEffect(() => {
-    localStorage.setItem("location", location);
-  }, [location]);
+      if (input.length < 2) {
+        setError("");
+        setWeather({});
+        return;
+      }
+
+      fetchWeatherData();
+
+      return function () {
+        geoController.abort();
+        weatherController.abort();
+      };
+    },
+    [input]
+  );
 
   return (
     <div className="app">
       <h1>Classy Weather</h1>
-      <Input location={location} onChangeLocation={setLocation} />
-      {isLoading && <p className="loader">Loading...</p>}
+      <Input input={input} onInput={setInput} />
 
-      {weather.weathercode && (
-        <Weather displayLocation={displayLocation} weather={weather} />
+      {isLoading && !error && <Loader />}
+
+      {error && <ErrorMessage message={error} />}
+
+      {weather.weathercode && !error && !isLoading && (
+        <Weather weather={weather} location={displayLocation} />
       )}
     </div>
   );
 }
 
-function Input({ location, onChangeLocation }) {
-  localStorage.setItem("location", location);
-
+function Input({ input, onInput }) {
   return (
     <input
+      className="search"
       type="text"
-      placeholder="Search from location..."
-      value={location}
-      onChange={(e) => onChangeLocation(e.target.value)}
+      placeholder="Search location..."
+      value={input}
+      onChange={(e) => onInput(e.target.value)}
     />
   );
 }
 
-function Weather({ displayLocation, weather }) {
-  // console.log(weather);
+function Weather({ weather, location }) {
   const {
     temperature_2m_max: max,
     temperature_2m_min: min,
@@ -124,11 +147,25 @@ function Weather({ displayLocation, weather }) {
     weathercode: codes,
   } = weather;
 
+  useEffect(
+    function () {
+      if (!location) {
+        return;
+      }
+      document.title = `Weather: ${location}`;
+
+      return function () {
+        document.title = "Classy Weather";
+      };
+    },
+    [location]
+  );
+
   return (
     <div>
-      <h2>Weather {displayLocation}</h2>
+      <h2>Weather in {location}</h2>
       <ul className="weather">
-        {dates?.map((date, i) => (
+        {dates.map((date, i) => (
           <Day
             date={date}
             max={max.at(i)}
@@ -143,14 +180,23 @@ function Weather({ displayLocation, weather }) {
   );
 }
 
-function Day({ date, max, min, code, isToday }) {
+function Day(props) {
+  const { date, min, max, code, isToday } = props;
   return (
-    <l1 className="day">
+    <li className="day">
       <span>{getWeatherIcon(code)}</span>
       <p>{isToday ? "Today" : formatDay(date)}</p>
       <p>
-        {Math.floor(min)}&deg; &mdash;{Math.ceil(max)}&deg;
+        {Math.floor(min)}&deg;C &mdash; <strong>{Math.ceil(max)}&deg;C</strong>
       </p>
-    </l1>
+    </li>
   );
+}
+
+function Loader() {
+  return <p className="loader">Loading...</p>;
+}
+
+function ErrorMessage({ message }) {
+  return <p className="loader">{message}</p>;
 }
